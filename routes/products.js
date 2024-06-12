@@ -1,7 +1,13 @@
+
+const express = require("express");
+const router = express.Router();
+
+//Se establece la conexion a la base de datos
+const connection = require('../db/connection');
 // Rutas para Productos
 
 // Obtener todos los productos
-app.get('/api/productos', (req, res) => {
+router.get('/api/productos', (req, res) => {
     connection.query('SELECT * FROM productos', (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -9,7 +15,7 @@ app.get('/api/productos', (req, res) => {
   });
   
   // Crear un nuevo producto
-  app.post('/api/productos', (req, res) => {
+  router.post('/api/productos', (req, res) => {
     const { nombre, descripcion, precio, proveedor, cantidad_inventario } = req.body;
     connection.query('INSERT INTO productos (nombre, descripcion, precio, proveedor, cantidad_inventario) VALUES (?, ?, ?, ?, ?)', [nombre, descripcion, precio, proveedor, cantidad_inventario], (err, results) => {
       if (err) throw err;
@@ -18,7 +24,7 @@ app.get('/api/productos', (req, res) => {
   });
   
   // Actualizar un producto
-  app.put('/api/productos/:id', (req, res) => {
+  router.put('/api/productos/:id', (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, precio, proveedor, cantidad_inventario } = req.body;
     connection.query('UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, proveedor = ?, cantidad_inventario = ? WHERE id = ?', [nombre, descripcion, precio, proveedor, cantidad_inventario, id], (err, results) => {
@@ -28,10 +34,13 @@ app.get('/api/productos', (req, res) => {
   });
   
   // Eliminar un producto
-  app.delete('/api/productos/:id', (req, res) => {
+  router.delete('/api/productos/:id', (req, res) => {
     const { id } = req.params;
     connection.query('DELETE FROM productos WHERE id = ?', [id], (err, results) => {
       if (err) throw err;
       res.json({ id });
     });
   });
+
+  //Se exporta el modulo
+module.exports = router;

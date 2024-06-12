@@ -1,7 +1,13 @@
-// Rutas para Cliente
+
+
+const express = require("express");
+const router = express.Router();
+
+//Se establece la conexion a la base de datos
+const connection = require('../db/connection');// Rutas para Cliente
 
 // Obtener todos los clientes
-app.get('/api/cliente', (req, res) => {
+router.get('/api/cliente', (req, res) => {
   connection.query('SELECT * FROM cliente', (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -9,7 +15,7 @@ app.get('/api/cliente', (req, res) => {
 });
 
 // Crear un nuevo cliente
-app.post('/api/cliente', (req, res) => {
+router.post('/api/cliente', (req, res) => {
   const { nombre, apellido, direccion, email, telefono } = req.body;
   connection.query('INSERT INTO cliente (nombre, apellido, direccion, email, telefono) VALUES (?, ?, ?, ?, ?)', [nombre, apellido, direccion, email, telefono], (err, results) => {
     if (err) throw err;
@@ -18,7 +24,7 @@ app.post('/api/cliente', (req, res) => {
 });
 
 // Actualizar un cliente
-app.put('/api/cliente/:id', (req, res) => {
+router.put('/api/cliente/:id', (req, res) => {
   const { id } = req.params;
   const { nombre, apellido, direccion, email, telefono } = req.body;
   connection.query('UPDATE cliente SET nombre = ?, apellido = ?, direccion = ?, email = ?, telefono = ? WHERE id = ?', [nombre, apellido, direccion, email, telefono, id], (err, results) => {
@@ -28,10 +34,13 @@ app.put('/api/cliente/:id', (req, res) => {
 });
 
 // Eliminar un cliente
-app.delete('/api/cliente/:id', (req, res) => {
+router.delete('/api/cliente/:id', (req, res) => {
   const { id } = req.params;
   connection.query('DELETE FROM cliente WHERE id = ?', [id], (err, results) => {
     if (err) throw err;
     res.json({ id });
   });
 });
+
+//Se exporta el modulo
+module.exports = router;

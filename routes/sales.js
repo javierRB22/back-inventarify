@@ -1,7 +1,15 @@
+
+const express = require("express");
+const router = express.Router();
+
+//Se establece la conexion a la base de datos
+const connection = require('../db/connection');
+
+
 // Rutas para Ventas
 
 // Obtener todas las ventas
-app.get('/api/ventas', (req, res) => {
+router.get('/api/ventas', (req, res) => {
     connection.query('SELECT * FROM ventas', (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -9,7 +17,7 @@ app.get('/api/ventas', (req, res) => {
   });
   
   // Crear una nueva venta
-  app.post('/api/ventas', (req, res) => {
+  router.post('/api/ventas', (req, res) => {
     const { fecha_venta, total_ventas } = req.body;
     connection.query('INSERT INTO ventas (fecha_venta, total_ventas) VALUES (?, ?)', [fecha_venta, total_ventas], (err, results) => {
       if (err) throw err;
@@ -18,7 +26,7 @@ app.get('/api/ventas', (req, res) => {
   });
   
   // Actualizar una venta
-  app.put('/api/ventas/:id', (req, res) => {
+  router.put('/api/ventas/:id', (req, res) => {
     const { id } = req.params;
     const { fecha_venta, total_ventas } = req.body;
     connection.query('UPDATE ventas SET fecha_venta = ?, total_ventas = ? WHERE id = ?', [fecha_venta, total_ventas, id], (err, results) => {
@@ -28,14 +36,15 @@ app.get('/api/ventas', (req, res) => {
   });
   
   // Eliminar una venta
-  app.delete('/api/ventas/:id', (req, res) => {
+  router.delete('/api/ventas/:id', (req, res) => {
     const { id } = req.params;
     connection.query('DELETE FROM ventas WHERE id = ?', [id], (err, results) => {
       if (err) throw err;
       res.json({ id });
     });
   });
+
+
+  //Se exporta el modulo
+module.exports = router;
   
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  }); 

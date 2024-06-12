@@ -1,7 +1,14 @@
+
+const express = require("express");
+const router = express.Router();
+
+//Se establece la conexion a la base de datos
+const connection = require('../db/connection');// R
+
 // Rutas para Factura
 
 // Obtener todas las facturas
-app.get('/api/facturas', (req, res) => {
+router.get('/api/facturas', (req, res) => {
     connection.query('SELECT * FROM factura', (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -9,7 +16,7 @@ app.get('/api/facturas', (req, res) => {
   });
   
   // Crear una nueva factura
-  app.post('/api/facturas', (req, res) => {
+  router.post('/api/facturas', (req, res) => {
     const { Fecha, Cantidad_Producto, Cliente } = req.body;
     connection.query('INSERT INTO factura (Fecha, Cantidad_Producto, Cliente) VALUES (?, ?, ?)', [Fecha, Cantidad_Producto, Cliente], (err, results) => {
       if (err) throw err;
@@ -18,7 +25,7 @@ app.get('/api/facturas', (req, res) => {
   });
   
   // Actualizar una factura
-  app.put('/api/facturas/:id', (req, res) => {
+  router.put('/api/facturas/:id', (req, res) => {
     const { id } = req.params;
     const { Fecha, Cantidad_Producto, Cliente } = req.body;
     connection.query('UPDATE factura SET Fecha = ?, Cantidad_Producto = ?, Cliente = ? WHERE id = ?', [Fecha, Cantidad_Producto, Cliente, id], (err, results) => {
@@ -28,10 +35,12 @@ app.get('/api/facturas', (req, res) => {
   });
   
   // Eliminar una factura
-  app.delete('/api/facturas/:id', (req, res) => {
+  router.delete('/api/facturas/:id', (req, res) => {
     const { id } = req.params;
     connection.query('DELETE FROM factura WHERE id = ?', [id], (err, results) => {
       if (err) throw err;
       res.json({ id });
     });
-  });w
+  });
+
+  module.exports = router;
