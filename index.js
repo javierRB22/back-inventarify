@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const { createServer } = require('node:http');
 
 const app = express();
-const port = 3002;
+const port = 3001;
 
 const server = createServer(app);
 
@@ -20,6 +20,7 @@ app.use(require('./routes/products'));
 app.use(require('./routes/providers'));
 app.use(require('./routes/sales'));
 app.use(require('./routes/users'));
+app.use(require('./routes/register'));
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
