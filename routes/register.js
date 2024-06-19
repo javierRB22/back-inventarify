@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 
   router.post('/api/register', (req,res) => {
-    console.log("entro a registrar")
+    
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
                     res.send(result);
 
                 }else {
-                    res.send({message: "WRONG EMAIL OR PASSWORD"})
+                    res.send({message: "CORREO O CONTRASEÑA INCORRECTOS"})
                 }
                 
             }
@@ -52,9 +52,6 @@ router.get('/', (req, res) => {
 
 
   })
-
-
-
 
 
       //Se exporta el modulo

@@ -19,7 +19,8 @@ router.get('/api/ventas', (req, res) => {
   // Crear una nueva venta
   router.post('/api/ventas', (req, res) => {
     const { fecha_venta, total_ventas } = req.body;
-    connection.query('INSERT INTO ventas (fecha_venta, total_ventas) VALUES (?, ?)', [fecha_venta, total_ventas], (err, results) => {
+    let f_venta = new Date(fecha_venta)
+    connection.query('INSERT INTO ventas (fecha_venta, total_ventas) VALUES (?, ?)', [f_venta, total_ventas], (err, results) => {
       if (err) throw err;
       res.json({ id: results.insertId, fecha_venta, total_ventas });
     });
@@ -29,7 +30,8 @@ router.get('/api/ventas', (req, res) => {
   router.put('/api/ventas/:id', (req, res) => {
     const { id } = req.params;
     const { fecha_venta, total_ventas } = req.body;
-    connection.query('UPDATE ventas SET fecha_venta = ?, total_ventas = ? WHERE id = ?', [fecha_venta, total_ventas, id], (err, results) => {
+    let f_venta = new Date(fecha_venta)
+    connection.query('UPDATE ventas SET fecha_venta = ?, total_ventas = ? WHERE id = ?', [f_venta, total_ventas, id], (err, results) => {
       if (err) throw err;
       res.json({ id, fecha_venta, total_ventas });
     });
